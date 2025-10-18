@@ -59,30 +59,11 @@
             width: 200px;
             height: 200px;
             margin: 20px auto;
-            background-color: #ff69b4;
-            border-radius: 10px;
-            position: relative;
             cursor: pointer;
-            transition: transform 0.5s;
+            transition: transform 0.5s; /* Optional: Add a slight scale or rotate if desired */
         }
         .present.open {
-            transform: rotateY(180deg);
-        }
-        .lid {
-            width: 100%;
-            height: 50px;
-            background-color: #ff1493;
-            position: absolute;
-            top: 0;
-            border-radius: 10px 10px 0 0;
-        }
-        .box {
-            width: 100%;
-            height: 150px;
-            background-color: #ff69b4;
-            position: absolute;
-            bottom: 0;
-            border-radius: 0 0 10px 10px;
+            /* Removed rotateY since we're using images now; add any desired effect here */
         }
         .message {
             display: none;
@@ -116,12 +97,6 @@
                 width: 150px;
                 height: 150px;
             }
-            .lid {
-                height: 37.5px;
-            }
-            .box {
-                height: 112.5px;
-            }
             button {
                 font-size: 14px;
                 padding: 8px 16px;
@@ -138,12 +113,6 @@
             .present {
                 width: 120px;
                 height: 120px;
-            }
-            .lid {
-                height: 30px;
-            }
-            .box {
-                height: 90px;
             }
             h1 {
                 font-size: 24px;
@@ -185,10 +154,7 @@
     <div id="presentView" style="display: none;">
         <div class="container">
             <h1>A Special Message for You</h1>
-            <div class="present" id="presentBox">
-                <div class="lid"></div>
-                <div class="box"></div>
-            </div>
+            <img src="unopened.png" class="present" id="presentBox" alt="Present Box">
             <div class="message" id="confessionMessage"></div>
         </div>
     </div>
@@ -231,11 +197,12 @@
                 const messageDiv = document.getElementById('confessionMessage');
                 
                 presentBox.addEventListener('click', function() {
-                    presentBox.classList.add('open');
+                    presentBox.src = 'opened.png';  // Change to opened image
+                    presentBox.classList.add('open');  // Optional: Add class for any CSS effects
                     setTimeout(() => {
                         messageDiv.innerHTML = `<h2>From: ${data.from}</h2><h3>To: ${data.to}</h3><p>${data.message}</p>`;
                         messageDiv.classList.add('show');
-                    }, 500);
+                    }, 500);  // Delay to show message after image change
                 });
             } catch (e) {
                 alert('Invalid or corrupted link! Please check the URL.');
@@ -244,3 +211,5 @@
     </script>
 </body>
 </html>
+
+
