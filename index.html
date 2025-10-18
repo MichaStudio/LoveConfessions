@@ -46,15 +46,15 @@
         button:hover {
             background-color: #ff1493;
         }
-        .heart, .flower {
+        .heart, .rose {
             position: absolute;
             width: 50px;
             height: 50px;
-            animation: float 3s ease-in-out infinite;
+            animation: floatDown 3s ease-in-out infinite; /* Changed to float down */
         }
-        @keyframes float {
+        @keyframes floatDown {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(20px); } /* Floats down instead of up */
         }
         .present {
             width: 200px;
@@ -84,6 +84,15 @@
             position: absolute;
             bottom: 0;
             border-radius: 0 0 10px 10px;
+        }
+        .present-heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            z-index: 1;
         }
         .letter {
             display: none;
@@ -152,7 +161,7 @@
                 padding: 15px;
                 margin: 10px;
             }
-            .heart, .flower {
+            .heart, .rose {
                 width: 30px;
                 height: 30px;
             }
@@ -166,7 +175,7 @@
             .box {
                 height: 112.5px;
             }
-            .letter-heart {
+            .present-heart, .letter-heart {
                 width: 30px;
                 height: 30px;
             }
@@ -179,7 +188,7 @@
             }
         }
         @media (max-width: 480px) {
-            .heart, .flower {
+            .heart, .rose {
                 width: 25px;
                 height: 25px;
             }
@@ -193,7 +202,7 @@
             .box {
                 height: 90px;
             }
-            .letter-heart {
+            .present-heart, .letter-heart {
                 width: 25px;
                 height: 25px;
             }
@@ -242,6 +251,7 @@
             <div class="present" id="presentBox">
                 <div class="lid"></div>
                 <div class="box"></div>
+                <img src="heart2.png" class="present-heart" alt="Heart on Present">
             </div>
             <div class="letter" id="loveLetter">
                 <img src="heart.png" class="letter-heart" alt="Heart">
@@ -252,16 +262,16 @@
             <div class="message" id="confessionMessage"></div>
         </div>
 
-        <!-- Floating Flowers (on letter page) -->
-        <img src="flower.png" class="flower" style="left: 10%; animation-delay: 0s;">
-        <img src="flower.png" class="flower" style="left: 20%; animation-delay: 1s;">
-        <img src="flower.png" class="flower" style="left: 30%; animation-delay: 2s;">
-        <img src="flower.png" class="flower" style="left: 40%; animation-delay: 0.5s;">
-        <img src="flower.png" class="flower" style="left: 50%; animation-delay: 1.5s;">
-        <img src="flower.png" class="flower" style="left: 60%; animation-delay: 2.5s;">
-        <img src="flower.png" class="flower" style="left: 70%; animation-delay: 0.2s;">
-        <img src="flower.png" class="flower" style="left: 80%; animation-delay: 1.2s;">
-        <img src="flower.png" class="flower" style="left: 90%; animation-delay: 2.2s;">
+        <!-- Floating Roses (on letter page, floating down) -->
+        <img src="rose.png" class="rose" style="left: 10%; animation-delay: 0s;">
+        <img src="rose.png" class="rose" style="left: 20%; animation-delay: 1s;">
+        <img src="rose.png" class="rose" style="left: 30%; animation-delay: 2s;">
+        <img src="rose.png" class="rose" style="left: 40%; animation-delay: 0.5s;">
+        <img src="rose.png" class="rose" style="left: 50%; animation-delay: 1.5s;">
+        <img src="rose.png" class="rose" style="left: 60%; animation-delay: 2.5s;">
+        <img src="rose.png" class="rose" style="left: 70%; animation-delay: 0.2s;">
+        <img src="rose.png" class="rose" style="left: 80%; animation-delay: 1.2s;">
+        <img src="rose.png" class="rose" style="left: 90%; animation-delay: 2.2s;">
     </div>
 
     <script>
