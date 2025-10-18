@@ -46,7 +46,7 @@
         button:hover {
             background-color: #ff1493;
         }
-        .heart {
+        .heart, .flower {
             position: absolute;
             width: 50px;
             height: 50px;
@@ -90,7 +90,7 @@
             width: 200px;
             height: 200px;
             margin: 20px auto;
-            background-color: #fff;
+            background-color: #fff; /* White background */
             border: 2px solid #ff69b4;
             border-radius: 10px;
             position: relative;
@@ -99,6 +99,31 @@
             font-family: 'Courier New', monospace; /* Letter-like font */
             text-align: left;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            overflow: hidden; /* To contain the fold effect */
+        }
+        .letter::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 30px; /* Darker top fold */
+            background-color: #f0f0f0; /* Lighter gray for fold */
+            border-bottom: 1px solid #ccc;
+        }
+        .letter-content {
+            position: relative;
+            z-index: 1;
+            padding-top: 40px; /* Space for the fold */
+        }
+        .letter-heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            z-index: 2;
         }
         .letter.show {
             display: block;
@@ -127,7 +152,7 @@
                 padding: 15px;
                 margin: 10px;
             }
-            .heart {
+            .heart, .flower {
                 width: 30px;
                 height: 30px;
             }
@@ -141,6 +166,10 @@
             .box {
                 height: 112.5px;
             }
+            .letter-heart {
+                width: 30px;
+                height: 30px;
+            }
             button {
                 font-size: 14px;
                 padding: 8px 16px;
@@ -150,7 +179,7 @@
             }
         }
         @media (max-width: 480px) {
-            .heart {
+            .heart, .flower {
                 width: 25px;
                 height: 25px;
             }
@@ -163,6 +192,10 @@
             }
             .box {
                 height: 90px;
+            }
+            .letter-heart {
+                width: 25px;
+                height: 25px;
             }
             h1 {
                 font-size: 24px;
@@ -186,11 +219,12 @@
             <p>Share this link with your beloved:</p>
             <input type="text" id="shareLink" readonly>
             <button id="copyLink">Copy Link</button>
+            <button id="viewConfession">View Confession</button>
             <a id="messagesLink" href="#" target="_blank"><button>Go to Messages</button></a>
         </div>
     </div>
 
-    <!-- Floating Hearts -->
+    <!-- Floating Hearts (on creation page) -->
     <img src="heart.png" class="heart" style="left: 10%; animation-delay: 0s;">
     <img src="heart.png" class="heart" style="left: 20%; animation-delay: 1s;">
     <img src="heart.png" class="heart" style="left: 30%; animation-delay: 2s;">
@@ -209,9 +243,25 @@
                 <div class="lid"></div>
                 <div class="box"></div>
             </div>
-            <div class="letter" id="loveLetter"></div>
+            <div class="letter" id="loveLetter">
+                <img src="heart.png" class="letter-heart" alt="Heart">
+                <div class="letter-content">
+                    <!-- Content will be inserted here -->
+                </div>
+            </div>
             <div class="message" id="confessionMessage"></div>
         </div>
+
+        <!-- Floating Flowers (on letter page) -->
+        <img src="flower.png" class="flower" style="left: 10%; animation-delay: 0s;">
+        <img src="flower.png" class="flower" style="left: 20%; animation-delay: 1s;">
+        <img src="flower.png" class="flower" style="left: 30%; animation-delay: 2s;">
+        <img src="flower.png" class="flower" style="left: 40%; animation-delay: 0.5s;">
+        <img src="flower.png" class="flower" style="left: 50%; animation-delay: 1.5s;">
+        <img src="flower.png" class="flower" style="left: 60%; animation-delay: 2.5s;">
+        <img src="flower.png" class="flower" style="left: 70%; animation-delay: 0.2s;">
+        <img src="flower.png" class="flower" style="left: 80%; animation-delay: 1.2s;">
+        <img src="flower.png" class="flower" style="left: 90%; animation-delay: 2.2s;">
     </div>
 
     <script>
@@ -242,6 +292,11 @@
             alert('Link copied to clipboard!');
         });
 
+        document.getElementById('viewConfession').addEventListener('click', function() {
+            const link = document.getElementById('shareLink').value;
+            window.open(link, '_blank');  // Opens the confession link in a new tab/window
+        });
+
         // Check if there's data in URL hash (for viewing)
         if (window.location.hash) {
             try {
@@ -256,7 +311,8 @@
                 presentBox.addEventListener('click', function() {
                     presentBox.classList.add('open');
                     setTimeout(() => {
-                        letterDiv.innerHTML = `
+                        const letterContent = letterDiv.querySelector('.letter-content');
+                        letterContent.innerHTML = `
                             <div style="border-bottom: 1px solid #ff69b4; padding-bottom: 10px; margin-bottom: 10px;">
                                 <strong>Dear ${data.to},</strong>
                             </div>
@@ -279,6 +335,3 @@
     </script>
 </body>
 </html>
-
-
-
