@@ -41,6 +41,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            margin: 5px;
         }
         button:hover {
             background-color: #ff1493;
@@ -59,11 +60,48 @@
             width: 200px;
             height: 200px;
             margin: 20px auto;
+            background-color: #ff69b4;
+            border-radius: 10px;
+            position: relative;
             cursor: pointer;
-            transition: transform 0.5s; /* Optional: Add a slight scale or rotate if desired */
+            transition: transform 0.5s;
         }
         .present.open {
-            /* Removed rotateY since we're using images now; add any desired effect here */
+            transform: rotateY(180deg) scale(0.8); /* Rotate and shrink to simulate opening into a letter */
+        }
+        .lid {
+            width: 100%;
+            height: 50px;
+            background-color: #ff1493;
+            position: absolute;
+            top: 0;
+            border-radius: 10px 10px 0 0;
+        }
+        .box {
+            width: 100%;
+            height: 150px;
+            background-color: #ff69b4;
+            position: absolute;
+            bottom: 0;
+            border-radius: 0 0 10px 10px;
+        }
+        .letter {
+            display: none;
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            background-color: #fff;
+            border: 2px solid #ff69b4;
+            border-radius: 10px;
+            position: relative;
+            padding: 20px;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace; /* Letter-like font */
+            text-align: left;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .letter.show {
+            display: block;
         }
         .message {
             display: none;
@@ -93,9 +131,15 @@
                 width: 30px;
                 height: 30px;
             }
-            .present {
+            .present, .letter {
                 width: 150px;
                 height: 150px;
+            }
+            .lid {
+                height: 37.5px;
+            }
+            .box {
+                height: 112.5px;
             }
             button {
                 font-size: 14px;
@@ -110,14 +154,20 @@
                 width: 25px;
                 height: 25px;
             }
-            .present {
+            .present, .letter {
                 width: 120px;
                 height: 120px;
+            }
+            .lid {
+                height: 30px;
+            }
+            .box {
+                height: 90px;
             }
             h1 {
                 font-size: 24px;
             }
-            .message {
+            .message, .letter {
                 padding: 15px;
             }
         }
@@ -136,6 +186,7 @@
             <p>Share this link with your beloved:</p>
             <input type="text" id="shareLink" readonly>
             <button id="copyLink">Copy Link</button>
+            <a id="messagesLink" href="#" target="_blank"><button>Go to Messages</button></a>
         </div>
     </div>
 
@@ -154,7 +205,11 @@
     <div id="presentView" style="display: none;">
         <div class="container">
             <h1>A Special Message for You</h1>
-            <img src="unopened.png" class="present" id="presentBox" alt="Present Box">
+            <div class="present" id="presentBox">
+                <div class="lid"></div>
+                <div class="box"></div>
+            </div>
+            <div class="letter" id="loveLetter"></div>
             <div class="message" id="confessionMessage"></div>
         </div>
     </div>
@@ -176,6 +231,7 @@
             const link = currentUrl + '#' + data;
             
             document.getElementById('shareLink').value = link;
+            document.getElementById('messagesLink').href = `sms:?body=Check out this love confession: ${encodeURIComponent(link)}`;
             document.getElementById('result').style.display = 'block';
         });
 
@@ -194,15 +250,27 @@
                 document.getElementById('presentView').style.display = 'block';
                 
                 const presentBox = document.getElementById('presentBox');
+                const letterDiv = document.getElementById('loveLetter');
                 const messageDiv = document.getElementById('confessionMessage');
                 
                 presentBox.addEventListener('click', function() {
-                    presentBox.src = 'opened.png';  // Change to opened image
-                    presentBox.classList.add('open');  // Optional: Add class for any CSS effects
+                    presentBox.classList.add('open');
                     setTimeout(() => {
-                        messageDiv.innerHTML = `<h2>From: ${data.from}</h2><h3>To: ${data.to}</h3><p>${data.message}</p>`;
-                        messageDiv.classList.add('show');
-                    }, 500);  // Delay to show message after image change
+                        letterDiv.innerHTML = `
+                            <div style="border-bottom: 1px solid #ff69b4; padding-bottom: 10px; margin-bottom: 10px;">
+                                <strong>Dear ${data.to},</strong>
+                            </div>
+                            <p>${data.message}</p>
+                            <div style="text-align: right; margin-top: 20px;">
+                                <em>With love,<br>${data.from}</em>
+                            </div>
+                        `;
+                        letterDiv.classList.add('show');
+                        setTimeout(() => {
+                            messageDiv.innerHTML = `<p>💌 A heartfelt confession just for you!</p>`;
+                            messageDiv.classList.add('show');
+                        }, 1000);
+                    }, 500);
                 });
             } catch (e) {
                 alert('Invalid or corrupted link! Please check the URL.');
@@ -211,5 +279,6 @@
     </script>
 </body>
 </html>
+
 
 
